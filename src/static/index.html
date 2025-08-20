@@ -5,6 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mergington High School Activities</title>
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* ...existing styles... */
+      .activity-card {
+        /* ...existing styles... */
+        padding-bottom: 1.5em;
+      }
+      .participants-section {
+        margin-top: 1em;
+        background: #f8f9fa;
+        border-radius: 6px;
+        padding: 0.5em 1em;
+      }
+      .participants-section h4 {
+        margin: 0 0 0.5em 0;
+        font-size: 1em;
+        color: #333;
+      }
+      .participants-list {
+        margin: 0;
+        padding-left: 1.2em;
+        font-size: 0.97em;
+        color: #555;
+      }
+      .participants-list li {
+        margin-bottom: 0.2em;
+        list-style-type: disc;
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -46,5 +74,35 @@
     </footer>
 
     <script src="app.js"></script>
+    <script>
+      // ...existing script code...
+      function renderActivities(activities) {
+        const container = document.getElementById('activities-container');
+        container.innerHTML = '';
+        Object.entries(activities).forEach(([name, activity]) => {
+          const card = document.createElement('div');
+          card.className = 'activity-card';
+          // ...existing code for name, description, etc...
+          // Participants section
+          const participantsSection = document.createElement('div');
+          participantsSection.className = 'participants-section';
+          const participantsTitle = document.createElement('h4');
+          participantsTitle.textContent = 'Participants';
+          participantsSection.appendChild(participantsTitle);
+          const participantsList = document.createElement('ul');
+          participantsList.className = 'participants-list';
+          activity.participants.forEach(email => {
+            const li = document.createElement('li');
+            li.textContent = email;
+            participantsList.appendChild(li);
+          });
+          participantsSection.appendChild(participantsList);
+          card.appendChild(participantsSection);
+          // ...existing code for signup button, etc...
+          container.appendChild(card);
+        });
+      }
+      // ...existing script code...
+    </script>
   </body>
 </html>
