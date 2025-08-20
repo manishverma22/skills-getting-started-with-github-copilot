@@ -65,3 +65,62 @@ def signup_for_activity(activity_name: str, email: str):
     # Add student
     activity["participants"].append(email)
     return {"message": f"Signed up {email} for {activity_name}"}
+
+    # Validate student is not already signed up
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Already signed up for this activity")
+
+    # Validate max participants not exceeded
+    if len(activity["participants"]) >= activity["max_participants"]:
+        raise HTTPException(status_code=400, detail="Maximum participants reached")
+
+    # Add student to the activity
+    activity["participants"].append(email)
+    return {"message": f"Signed up {email} for {activity_name}"}    
+@app.get("/activities/{activity_name}")
+def get_activity_details(activity_name: str):
+    """Get details of a specific activity"""
+    if activity_name not in activities:
+        raise HTTPException(status_code=404, detail="Activity not found")
+    
+    return activities[activity_name]
+
+@app.get("/activities/{activity_name}/participants")
+def get_activity_participants(activity_name: str):
+    """Get participants of a specific activity"""
+    if activity_name not in activities:
+        raise HTTPException(status_code=404, detail="Activity not found")
+    
+    return activities[activity_name]["participants"]
+
+@app.get("/activities/{activity_name}/schedule")
+def get_activity_schedule(activity_name: str):
+    """Get schedule of a specific activity"""
+    if activity_name not in activities:
+        raise HTTPException(status_code=404, detail="Activity not found")
+    
+    return {"schedule": activities[activity_name]["schedule"]}
+
+@app.get("/activities/{activity_name}/description")     
+def get_activity_description(activity_name: str):
+    """Get description of a specific activity"""
+    if activity_name not in activities:
+        raise HTTPException(status_code=404, detail="Activity not found")
+    
+    return {"description": activities[activity_name]["description"]}
+
+@app.get("/activities/{activity_name}/max_participants")
+def get_activity_max_participants(activity_name: str):
+    """Get maximum participants for a specific activity"""
+    if activity_name not in activities:
+        raise HTTPException(status_code=404, detail="Activity not found")
+    
+    return {"max_participants": activities[activity_name]["max_participants"]}
+
+@app.get("/activities/{activity_name}/current_participants")
+def get_activity_current_participants(activity_name: str):
+    """Get current participants for a specific activity"""
+    if activity_name not in activities:
+        raise HTTPException(status_code=404, detail="Activity not found")
+    
+    return {"current_participants": len(activities[activity_name]["participants"])}
